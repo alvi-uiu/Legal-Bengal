@@ -3,7 +3,7 @@
 **Bangladesh Legal AI Assistant** - An intelligent legal assistant for Bangladesh laws, featuring bilingual support (English + বাংলা), hybrid retrieval, and legal document generation.
 
 <p align="center">
-  <img src="static/img/legal.png" alt="Legal-Bengal Logo" width="200">
+  <img src="static/img/legal.png" alt="Legal-Bengal Logo" width="400">
 </p>
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python)
