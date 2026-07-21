@@ -41,10 +41,6 @@
 
 ## Architecture
 
-Reused and adapted from:
-- **AskLegal.ai**: Hybrid retrieval, chat persistence, document generation
-- **Nyaya-GPT**: Agent architecture, FAISS vector search, multilingual embeddings
-
 ### Tech Stack
 | Component | Technology |
 |-----------|------------|
