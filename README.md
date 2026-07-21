@@ -231,23 +231,3 @@ https://bdlaws.minlaw.gov.bd/
 ## License
 
 MIT License - See [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Architecture inspired by **AskLegal.ai** (Indian Legal Assistant)
-- ReAct pattern and RAG from **Nyaya-GPT**
-- Bangladesh law dataset from official government sources
-- Multilingual embeddings from HuggingFace
-
-## Contact & Support
-
-For issues or questions:
-1. Check the [Issues](https://github.com/alvi-uiu/Legal-Bengal/issues) page
-2. Create a new issue with detailed description
-3. For legal questions, consult a qualified lawyer
-
----
-
-**Made with ❤️ for Bangladesh 🇧🇩**
-
-*Empowering citizens with accessible legal knowledge*
