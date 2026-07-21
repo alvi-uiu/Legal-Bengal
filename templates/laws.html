@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Database | Legal-Bengal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        bd: {
+                            green: '#006A4E',
+                            red: '#F42A41',
+                            dark: '#0A0A0C',
+                            glass: 'rgba(255, 255, 255, 0.05)',
+                            border: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        body { background: #000; color: #fff; overflow-x: hidden; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-strong { background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.12); }
+        .bd-gradient { background: linear-gradient(135deg, #006A4E 0%, #00A884 50%, #F42A41 100%); }
+        .bd-gradient-text { background: linear-gradient(135deg, #00D4AA 0%, #00A884 50%, #FF6B6B 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .glow-green { box-shadow: 0 0 30px rgba(0, 106, 78, 0.4), 0 0 60px rgba(0, 168, 132, 0.2); }
+        .law-card { transition: all 0.3s ease; }
+        .law-card:hover { transform: translateY(-3px); border-color: rgba(0, 168, 132, 0.3); }
+        .stat-card { background: linear-gradient(135deg, rgba(0, 106, 78, 0.2) 0%, rgba(0, 80, 60, 0.1) 100%); border: 1px solid rgba(0, 168, 132, 0.2); }
+        .fade-in-up { animation: fadeInUp 0.5s ease-out; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen bg-black flex flex-col">
+    <!-- Navigation -->
+    <nav class="glass border-b border-white/10 px-6 py-4 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 bd-gradient rounded-2xl flex items-center justify-center glow-green">
+                    <i class="fa-solid fa-scale-balanced text-white text-xl"></i>
+                </div>
+                <div>
+                    <span class="text-2xl font-black tracking-tighter bd-gradient-text">Legal-Bengal</span>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Legal Database</p>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="/" class="nav-item flex items-center space-x-2 px-4 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                    <i class="fa-solid fa-comments"></i>
+                    <span class="font-semibold text-sm">Chat</span>
+                </a>
+                <a href="/generate" class="nav-item flex items-center space-x-2 px-4 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                    <i class="fa-solid fa-file-contract"></i>
+                    <span class="font-semibold text-sm">Documents</span>
+                </a>
+                <button onclick="toggleApiKeyModal()" class="nav-item flex items-center space-x-2 px-4 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                    <i class="fa-solid fa-key"></i>
+                    <span class="font-semibold text-sm">API Key</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 md:p-10">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header Section -->
+            <div class="text-center mb-12 fade-in-up">
+                <div class="inline-flex items-center justify-center w-20 h-20 bd-gradient rounded-3xl mb-6 glow-green">
+                    <i class="fa-solid fa-book-open text-white text-3xl"></i>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-black tracking-tight text-white mb-4">Bangladesh Legal Database</h1>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">Comprehensive coverage of Bangladesh's major laws with AI-powered semantic search and bilingual support</p>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 fade-in-up">
+                <div class="stat-card rounded-3xl p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-[10px] text-bd-green font-black uppercase tracking-widest mb-1">Total Provisions</p>
+                            <p class="text-4xl font-black text-white">1,648+</p>
+                        </div>
+                        <div class="w-14 h-14 bg-bd-green/20 rounded-2xl flex items-center justify-center">
+                            <i class="fa-solid fa-layer-group text-bd-green text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card rounded-3xl p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-[10px] text-bd-green font-black uppercase tracking-widest mb-1">Law Categories</p>
+                            <p class="text-4xl font-black text-white">6</p>
+                        </div>
+                        <div class="w-14 h-14 bg-bd-green/20 rounded-2xl flex items-center justify-center">
+                            <i class="fa-solid fa-folder-tree text-bd-green text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card rounded-3xl p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-[10px] text-bd-green font-black uppercase tracking-widest mb-1">Languages</p>
+                            <p class="text-4xl font-black text-white">2</p>
+                        </div>
+                        <div class="w-14 h-14 bg-bd-green/20 rounded-2xl flex items-center justify-center">
+                            <i class="fa-solid fa-language text-bd-green text-2xl"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">English + বাংলা (Constitution)</p>
+                </div>
+            </div>
+
+            <!-- Laws Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+                <!-- Constitution -->
+                <div class="glass law-card rounded-3xl p-8">
+                    <div class="flex items-start space-x-5">
+                        <div class="w-16 h-16 bg-gradient-to-br from-yellow-500/30 to-yellow-500/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-landmark text-yellow-400 text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <h3 class="font-bold text-white text-xl">Constitution of Bangladesh</h3>
+                                <span class="px-2 py-1 bg-bd-green/20 text-bd-green text-[10px] font-black uppercase rounded-lg">Bilingual</span>
+                            </div>
+                            <p class="text-xs text-yellow-400 font-semibold mb-3">গণপ্রজাতন্ত্রী বাংলাদেশের সংবিধান</p>
+                            <div class="flex items-center space-x-4 mb-4">
+                                <span class="text-2xl font-black text-white">166</span>
+                                <span class="text-sm text-gray-400">Articles</span>
+                                <span class="w-px h-6 bg-white/10"></span>
+                                <span class="text-xs text-bd-green"><i class="fa-solid fa-circle-check mr-1"></i>English + বাংলা</span>
+                            </div>
+                            <p class="text-sm text-gray-400 leading-relaxed">Fundamental rights, state policy, governance structure, citizenship laws, judiciary system, and the supreme law of Bangladesh.</p>
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Article 27 - Equality</span>
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Article 32 - Life & Liberty</span>
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Article 35 - Fair Trial</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Penal Code -->
+                <div class="glass law-card rounded-3xl p-8">
+                    <div class="flex items-start space-x-5">
+                        <div class="w-16 h-16 bg-gradient-to-br from-red-500/30 to-red-500/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-gavel text-red-400 text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <h3 class="font-bold text-white text-xl">The Penal Code, 1860</h3>
+                                <span class="px-2 py-1 bg-white/10 text-gray-300 text-[10px] font-black uppercase rounded-lg">English</span>
+                            </div>
+                            <p class="text-xs text-red-400 font-semibold mb-3">দণ্ডবিধি, ১৮৬০</p>
+                            <div class="flex items-center space-x-4 mb-4">
+                                <span class="text-2xl font-black text-white">557</span>
+                                <span class="text-sm text-gray-400">Sections</span>
+                            </div>
+                            <p class="text-sm text-gray-400 leading-relaxed">Criminal offenses, punishments, general exceptions, abetment, conspiracy, offences against the state, public tranquility, and person.</p>
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Section 302 - Murder</span>
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Section 354 - Assault</span>
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Section 420 - Cheating</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Criminal Procedure -->
+                <div class="glass law-card rounded-3xl p-8">
+                    <div class="flex items-start space-x-5">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500/30 to-blue-500/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-scale-balanced text-blue-400 text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <h3 class="font-bold text-white text-xl">Code of Criminal Procedure, 1898</h3>
+                                <span class="px-2 py-1 bg-white/10 text-gray-300 text-[10px] font-black uppercase rounded-lg">English</span>
+                            </div>
+                            <p class="text-xs text-blue-400 font-semibold mb-3">ফৌজদারি কার্যবিধি, ১৮৯৮</p>
+                            <div class="flex items-center space-x-4 mb-4">
+                                <span class="text-2xl font-black text-white">471</span>
+                                <span class="text-sm text-gray-400">Sections</span>
+                            </div>
+                            <p class="text-sm text-gray-400 leading-relaxed">Constitution and powers of criminal courts, investigation procedures, trials, bail, appeals, and maintenance of public order.</p>
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Section 154 - FIR</span>
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Section 437 - Bail</span>
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Section 561A - HC Powers</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Registration Act -->
+                <div class="glass law-card rounded-3xl p-8">
+                    <div class="flex items-start space-x-5">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple-500/30 to-purple-500/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-file-signature text-purple-400 text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <h3 class="font-bold text-white text-xl">Registration Act, 1908</h3>
+                                <span class="px-2 py-1 bg-white/10 text-gray-300 text-[10px] font-black uppercase rounded-lg">English</span>
+                            </div>
+                            <p class="text-xs text-purple-400 font-semibold mb-3">রেজিস্ট্রেশন আইন, ১৯০৮</p>
+                            <div class="flex items-center space-x-4 mb-4">
+                                <span class="text-2xl font-black text-white">109</span>
+                                <span class="text-sm text-gray-400">Sections</span>
+                            </div>
+                            <p class="text-sm text-gray-400 leading-relaxed">Registration of documents, registration offices, procedures for property and legal document registration, time of registration.</p>
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Deed Registration</span>
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Power of Attorney</span>
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Sale Deed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- State Acquisition -->
+                <div class="glass law-card rounded-3xl p-8">
+                    <div class="flex items-start space-x-5">
+                        <div class="w-16 h-16 bg-gradient-to-br from-green-500/30 to-green-500/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-map-location-dot text-green-400 text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <h3 class="font-bold text-white text-xl">State Acquisition & Tenancy Act, 1950</h3>
+                                <span class="px-2 py-1 bg-white/10 text-gray-300 text-[10px] font-black uppercase rounded-lg">English</span>
+                            </div>
+                            <p class="text-xs text-green-400 font-semibold mb-3">ভূমি অধিগ্রহণ ও ভূমিরাজ আইন, ১৯৫০</p>
+                            <div class="flex items-center space-x-4 mb-4">
+                                <span class="text-2xl font-black text-white">203</span>
+                                <span class="text-sm text-gray-400">Sections</span>
+                            </div>
+                            <p class="text-sm text-gray-400 leading-relaxed">Land ceiling, tenancy rights, land acquisition, non-agricultural land, transfer restrictions, and land reform regulations.</p>
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Land Ceiling</span>
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Tenancy Rights</span>
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Mutation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transfer of Property -->
+                <div class="glass law-card rounded-3xl p-8">
+                    <div class="flex items-start space-x-5">
+                        <div class="w-16 h-16 bg-gradient-to-br from-orange-500/30 to-orange-500/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-house-chimney text-orange-400 text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <h3 class="font-bold text-white text-xl">Transfer of Property Act, 1882</h3>
+                                <span class="px-2 py-1 bg-white/10 text-gray-300 text-[10px] font-black uppercase rounded-lg">English</span>
+                            </div>
+                            <p class="text-xs text-orange-400 font-semibold mb-3">সম্পত্তি হস্তান্তর আইন, ১৮৮২</p>
+                            <div class="flex items-center space-x-4 mb-4">
+                                <span class="text-2xl font-black text-white">142</span>
+                                <span class="text-sm text-gray-400">Sections</span>
+                            </div>
+                            <p class="text-sm text-gray-400 leading-relaxed">Sale, mortgage, charge, lease, exchange, gift of immovable property, and rules for valid property transfers.</p>
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Sale Deed</span>
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Mortgage</span>
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-400">Lease Agreement</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example Queries -->
+            <div class="glass-strong rounded-3xl p-8 mb-8">
+                <div class="flex items-center space-x-4 mb-6">
+                    <div class="w-12 h-12 bd-gradient rounded-2xl flex items-center justify-center">
+                        <i class="fa-solid fa-lightbulb text-white text-xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-black text-white">Example Queries You Can Ask</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass rounded-2xl p-5">
+                        <h4 class="font-bold text-bd-green mb-4 flex items-center"><i class="fa-solid fa-globe mr-2"></i> English Queries</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li class="flex items-center"><i class="fa-solid fa-chevron-right text-bd-green mr-2 text-xs"></i> "What is Section 302 of the Penal Code?"</li>
+                            <li class="flex items-center"><i class="fa-solid fa-chevron-right text-bd-green mr-2 text-xs"></i> "Explain Article 27 of the Constitution"</li>
+                            <li class="flex items-center"><i class="fa-solid fa-chevron-right text-bd-green mr-2 text-xs"></i> "How to file a criminal case in Bangladesh?"</li>
+                            <li class="flex items-center"><i class="fa-solid fa-chevron-right text-bd-green mr-2 text-xs"></i> "What are the fundamental rights?"</li>
+                            <li class="flex items-center"><i class="fa-solid fa-chevron-right text-bd-green mr-2 text-xs"></i> "Explain the procedure for property registration"</li>
+                        </ul>
+                    </div>
+                    <div class="glass rounded-2xl p-5">
+                        <h4 class="font-bold text-bd-green mb-4 flex items-center"><i class="fa-solid fa-language mr-2"></i> বাংলা কোয়েরি</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li class="flex items-center"><i class="fa-solid fa-chevron-right text-bd-green mr-2 text-xs"></i> "ধারা ৩০২ কী?"</li>
+                            <li class="flex items-center"><i class="fa-solid fa-chevron-right text-bd-green mr-2 text-xs"></i> "জিডি করার পদ্ধতি কী?"</li>
+                            <li class="flex items-center"><i class="fa-solid fa-chevron-right text-bd-green mr-2 text-xs"></i> "মৌলিক অধিকারগুলো কী কী?"</li>
+                            <li class="flex items-center"><i class="fa-solid fa-chevron-right text-bd-green mr-2 text-xs"></i> "জামিন পেতে কী করতে হয়?"</li>
+                            <li class="flex items-center"><i class="fa-solid fa-chevron-right text-bd-green mr-2 text-xs"></i> "সম্পত্তি রেজিস্ট্রেশন কিভাবে হয়?"</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="text-center">
+                <a href="/" class="inline-flex items-center space-x-3 px-8 py-4 bd-gradient rounded-2xl font-bold text-white hover:opacity-90 transition-all glow-border">
+                    <i class="fa-solid fa-robot text-xl"></i>
+                    <span>Start Chatting with Legal-Bengal</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="md:hidden fixed bottom-4 left-4 right-4 h-18 glass border border-white/20 flex items-center justify-around px-2 rounded-[28px] z-50">
+        <a href="/" class="flex flex-col items-center justify-center w-16 h-14 rounded-2xl text-gray-500">
+            <i class="fa-solid fa-comments text-lg"></i>
+            <span class="text-[9px] font-black uppercase tracking-tighter mt-1">Chat</span>
+        </a>
+        <a href="/laws" class="flex flex-col items-center justify-center w-16 h-14 rounded-2xl bg-bd-green/20 text-bd-green">
+            <i class="fa-solid fa-book-open text-lg"></i>
+            <span class="text-[9px] font-black uppercase tracking-tighter mt-1">Laws</span>
+        </a>
+        <a href="/generate" class="flex flex-col items-center justify-center w-16 h-14 rounded-2xl text-gray-500">
+            <i class="fa-solid fa-file-contract text-lg"></i>
+            <span class="text-[9px] font-black uppercase tracking-tighter mt-1">Docs</span>
+        </a>
+        <button onclick="toggleApiKeyModal()" class="flex flex-col items-center justify-center w-16 h-14 rounded-2xl text-gray-500">
+            <i class="fa-solid fa-gear text-lg"></i>
+            <span class="text-[9px] font-black uppercase tracking-tighter mt-1">Settings</span>
+        </button>
+    </nav>
+
+    <!-- API Key Modal -->
+    <div id="apiKeyModal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="toggleApiKeyModal()"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-4">
+            <div class="glass-strong rounded-3xl p-6 border border-white/20">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-black text-white">API Key Settings</h3>
+                    <button onclick="toggleApiKeyModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <div class="glass rounded-2xl p-4 mb-4 border-l-4 border-bd-green">
+                    <p class="text-sm text-gray-300"><i class="fa-solid fa-circle-info text-bd-green mr-2"></i><span id="apiKeyStatus">Using default API key</span></p>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] text-gray-500 font-black uppercase tracking-widest mb-2">Your Groq API Key</label>
+                        <input type="password" id="userApiKey" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-bd-green/50" placeholder="gsk_...">
+                    </div>
+                    <button onclick="saveApiKey()" class="w-full py-4 bd-gradient rounded-xl font-bold text-white flex items-center justify-center space-x-2 hover:opacity-90 transition-all"><i class="fa-solid fa-check"></i><span>Save API Key</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleApiKeyModal() {
+            document.getElementById('apiKeyModal').classList.toggle('hidden');
+        }
+
+        async function saveApiKey() {
+            const key = document.getElementById('userApiKey').value.trim();
+            if (!key) { alert('Please enter an API key'); return; }
+            
+            try {
+                const response = await fetch('/api/set_key', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ api_key: key })
+                });
+                const data = await response.json();
+                
+                if (data.error) { alert('Error: ' + data.error); }
+                else {
+                    document.getElementById('apiKeyStatus').textContent = 'Using your custom API key ✓';
+                    alert('API key saved!');
+                    toggleApiKeyModal();
+                }
+            } catch (error) { alert('Failed to save API key'); }
+        }
+    </script>
+</body>
+</html>

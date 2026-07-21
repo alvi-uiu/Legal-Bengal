@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Generator | Legal-Bengal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        bd: {
+                            green: '#006A4E',
+                            red: '#F42A41',
+                            dark: '#0A0A0C',
+                            glass: 'rgba(255, 255, 255, 0.05)',
+                            border: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        body { background: #000; color: #fff; overflow-x: hidden; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-strong { background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.12); }
+        .bd-gradient { background: linear-gradient(135deg, #006A4E 0%, #00A884 50%, #F42A41 100%); }
+        .bd-gradient-text { background: linear-gradient(135deg, #00D4AA 0%, #00A884 50%, #FF6B6B 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .glow-green { box-shadow: 0 0 30px rgba(0, 106, 78, 0.4), 0 0 60px rgba(0, 168, 132, 0.2); }
+        .glow-border { box-shadow: 0 0 20px rgba(0, 106, 78, 0.15); }
+        .doc-card { transition: all 0.3s ease; }
+        .doc-card:hover { transform: translateY(-5px); box-shadow: 0 10px 40px rgba(0, 106, 78, 0.2); border-color: rgba(0, 168, 132, 0.3); }
+        .pulse-glow { animation: pulseGlow 2s ease-in-out infinite; }
+        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 20px rgba(0, 106, 78, 0.3); } 50% { box-shadow: 0 0 40px rgba(0, 106, 78, 0.5); } }
+        .fade-in-up { animation: fadeInUp 0.5s ease-out; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen bg-black flex flex-col">
+    <!-- Navigation -->
+    <nav class="glass border-b border-white/10 px-6 py-4 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 bd-gradient rounded-2xl flex items-center justify-center glow-green">
+                    <i class="fa-solid fa-scale-balanced text-white text-xl"></i>
+                </div>
+                <div>
+                    <span class="text-2xl font-black tracking-tighter bd-gradient-text">Legal-Bengal</span>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Document Generator</p>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="/" class="nav-item flex items-center space-x-2 px-4 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                    <i class="fa-solid fa-comments"></i>
+                    <span class="font-semibold text-sm">Chat</span>
+                </a>
+                <a href="/laws" class="nav-item flex items-center space-x-2 px-4 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span class="font-semibold text-sm">Laws</span>
+                </a>
+                <button onclick="toggleApiKeyModal()" class="nav-item flex items-center space-x-2 px-4 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                    <i class="fa-solid fa-key"></i>
+                    <span class="font-semibold text-sm">API Key</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 md:p-10">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header Section -->
+            <div class="text-center mb-12 fade-in-up">
+                <div class="inline-flex items-center justify-center w-20 h-20 bd-gradient rounded-3xl mb-6 glow-green">
+                    <i class="fa-solid fa-file-contract text-white text-3xl"></i>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-black tracking-tight text-white mb-4">Legal Document Generator</h1>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">Generate professional Bangladesh legal documents in minutes. AI-assisted templates for GD, Legal Notices, Affidavits, and more.</p>
+            </div>
+
+            <!-- Document Types Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                <!-- GD -->
+                <div class="glass doc-card rounded-3xl p-6 cursor-pointer" onclick="selectDocType('general_diary')">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-bd-green/30 to-bd-green/10 rounded-2xl flex items-center justify-center">
+                            <i class="fa-solid fa-file-lines text-bd-green text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-white text-lg mb-1">General Diary (GD)</h3>
+                            <p class="text-xs text-bd-green font-semibold uppercase tracking-wider mb-2">জিডি (সাধারণ ডায়েরি)</p>
+                            <p class="text-sm text-gray-400">Police station complaint for theft, harassment, or general incidents.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legal Notice -->
+                <div class="glass doc-card rounded-3xl p-6 cursor-pointer" onclick="selectDocType('legal_notice')">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-blue-500/30 to-blue-500/10 rounded-2xl flex items-center justify-center">
+                            <i class="fa-solid fa-envelope-open-text text-blue-400 text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-white text-lg mb-1">Legal Notice</h3>
+                            <p class="text-xs text-blue-400 font-semibold uppercase tracking-wider mb-2">আইনি নোটিশ</p>
+                            <p class="text-sm text-gray-400">Formal legal warning before initiating court proceedings.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Affidavit -->
+                <div class="glass doc-card rounded-3xl p-6 cursor-pointer" onclick="selectDocType('affidavit')">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-purple-500/30 to-purple-500/10 rounded-2xl flex items-center justify-center">
+                            <i class="fa-solid fa-file-signature text-purple-400 text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-white text-lg mb-1">Affidavit</h3>
+                            <p class="text-xs text-purple-400 font-semibold uppercase tracking-wider mb-2">হলফনামা</p>
+                            <p class="text-sm text-gray-400">Sworn statement for name change, address proof, or declarations.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Power of Attorney -->
+                <div class="glass doc-card rounded-3xl p-6 cursor-pointer" onclick="selectDocType('power_of_attorney')">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-orange-500/30 to-orange-500/10 rounded-2xl flex items-center justify-center">
+                            <i class="fa-solid fa-handshake text-orange-400 text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-white text-lg mb-1">Power of Attorney</h3>
+                            <p class="text-xs text-orange-400 font-semibold uppercase tracking-wider mb-2">মোক্তারনামা</p>
+                            <p class="text-sm text-gray-400">Grant legal representation power to another person.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bail Application -->
+                <div class="glass doc-card rounded-3xl p-6 cursor-pointer" onclick="selectDocType('bail_application')">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-pink-500/30 to-pink-500/10 rounded-2xl flex items-center justify-center">
+                            <i class="fa-solid fa-scale-unbalanced text-pink-400 text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-white text-lg mb-1">Bail Application</h3>
+                            <p class="text-xs text-pink-400 font-semibold uppercase tracking-wider mb-2">জামিন আবেদন</p>
+                            <p class="text-sm text-gray-400">Court petition for bail in criminal proceedings.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agreement -->
+                <div class="glass doc-card rounded-3xl p-6 cursor-pointer" onclick="selectDocType('agreement')">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-teal-500/30 to-teal-500/10 rounded-2xl flex items-center justify-center">
+                            <i class="fa-solid fa-file-contract text-teal-400 text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-white text-lg mb-1">Agreement/Contract</h3>
+                            <p class="text-xs text-teal-400 font-semibold uppercase tracking-wider mb-2">চুক্তিপত্র</p>
+                            <p class="text-sm text-gray-400">General contracts, rental agreements, and legal arrangements.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document Generation Form -->
+            <div class="glass-strong rounded-3xl p-8 md:p-10 fade-in-up">
+                <div class="flex items-center space-x-4 mb-6">
+                    <div class="w-12 h-12 bd-gradient rounded-2xl flex items-center justify-center">
+                        <i class="fa-solid fa-wand-magic-sparkles text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-black text-white">Generate Your Document</h2>
+                        <p class="text-gray-400 text-sm">Describe your requirements and our AI will create a professional document</p>
+                    </div>
+                </div>
+
+                <form id="docForm" onsubmit="generateDocument(event)" class="space-y-6">
+                    <div>
+                        <label class="block text-[10px] text-gray-500 font-black uppercase tracking-widest mb-3">Document Description</label>
+                        <textarea 
+                            id="docPrompt" 
+                            rows="4"
+                            class="w-full bg-black/50 border border-white/10 rounded-2xl px-4 py-4 text-white placeholder-gray-600 focus:outline-none focus:border-bd-green/50 transition-all resize-none"
+                            placeholder="Describe what you need. Include: your name, address, incident details, and what you want to achieve. Example: 'Create a GD for stolen mobile. My name is Karim, address: 45 Gulshan Ave, Dhaka. Phone stolen yesterday at 3 PM near Gulshan-1.'"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-[10px] text-gray-500 font-black uppercase tracking-widest mb-3">Document Language</label>
+                            <select id="docLanguage" class="w-full bg-black/50 border border-white/10 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-bd-green/50">
+                                <option value="bn">🇧🇩 Bengali (বাংলা) - Recommended</option>
+                                <option value="en">🇬🇧 English</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button 
+                                type="submit" 
+                                id="generateBtn"
+                                class="w-full py-4 bd-gradient rounded-2xl font-bold text-white flex items-center justify-center space-x-3 hover:opacity-90 transition-all pulse-glow"
+                            >
+                                <i class="fa-solid fa-file-arrow-down"></i>
+                                <span>Generate Document</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Loading State -->
+                <div id="loadingIndicator" class="hidden text-center py-10">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bd-gradient rounded-2xl mb-4 animate-pulse">
+                        <i class="fa-solid fa-spinner fa-spin text-white text-2xl"></i>
+                    </div>
+                    <p class="text-gray-400 font-semibold">Generating your legal document...</p>
+                    <p class="text-xs text-gray-600 mt-2">AI is analyzing your requirements and creating the template</p>
+                </div>
+
+                <!-- Result State -->
+                <div id="resultArea" class="hidden space-y-6 mt-8 pt-8 border-t border-white/10">
+                    <div class="glass rounded-2xl p-4 border-l-4 border-bd-green">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-circle-check text-bd-green text-2xl"></i>
+                            <div>
+                                <h3 class="font-bold text-white">Document Generated Successfully!</h3>
+                                <p class="text-sm text-gray-400">Your document is ready for download</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a id="downloadLink" href="#" target="_blank" class="flex-1 py-4 bg-white text-black rounded-2xl font-bold flex items-center justify-center space-x-3 hover:bg-gray-100 transition-all">
+                            <i class="fa-solid fa-download"></i>
+                            <span>Download Document (.docx)</span>
+                        </a>
+                        <button onclick="resetForm()" class="flex-1 py-4 glass border border-white/20 rounded-2xl font-bold text-white flex items-center justify-center space-x-3 hover:bg-white/5 transition-all">
+                            <i class="fa-solid fa-rotate-right"></i>
+                            <span>Create Another</span>
+                        </button>
+                    </div>
+
+                    <div class="glass rounded-2xl p-4 border-l-4 border-yellow-500/50">
+                        <p class="text-sm text-gray-400">
+                            <i class="fa-solid fa-triangle-exclamation text-yellow-500 mr-2"></i>
+                            <strong>Important:</strong> This is a template document. Please have it reviewed by a qualified lawyer before submitting to any authority or court.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="md:hidden fixed bottom-4 left-4 right-4 h-18 glass border border-white/20 flex items-center justify-around px-2 rounded-[28px] z-50">
+        <a href="/" class="flex flex-col items-center justify-center w-16 h-14 rounded-2xl text-gray-500">
+            <i class="fa-solid fa-comments text-lg"></i>
+            <span class="text-[9px] font-black uppercase tracking-tighter mt-1">Chat</span>
+        </a>
+        <a href="/laws" class="flex flex-col items-center justify-center w-16 h-14 rounded-2xl text-gray-500">
+            <i class="fa-solid fa-book-open text-lg"></i>
+            <span class="text-[9px] font-black uppercase tracking-tighter mt-1">Laws</span>
+        </a>
+        <a href="/generate" class="flex flex-col items-center justify-center w-16 h-14 rounded-2xl bg-bd-green/20 text-bd-green">
+            <i class="fa-solid fa-file-contract text-lg"></i>
+            <span class="text-[9px] font-black uppercase tracking-tighter mt-1">Docs</span>
+        </a>
+        <button onclick="toggleApiKeyModal()" class="flex flex-col items-center justify-center w-16 h-14 rounded-2xl text-gray-500">
+            <i class="fa-solid fa-gear text-lg"></i>
+            <span class="text-[9px] font-black uppercase tracking-tighter mt-1">Settings</span>
+        </button>
+    </nav>
+
+    <!-- API Key Modal -->
+    <div id="apiKeyModal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="toggleApiKeyModal()"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-4">
+            <div class="glass-strong rounded-3xl p-6 border border-white/20">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-black text-white">API Key Settings</h3>
+                    <button onclick="toggleApiKeyModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <div class="glass rounded-2xl p-4 mb-4 border-l-4 border-bd-green">
+                    <p class="text-sm text-gray-300"><i class="fa-solid fa-circle-info text-bd-green mr-2"></i><span id="apiKeyStatus">Using default API key</span></p>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">You can use your own Groq API key. Get one free from <a href="https://console.groq.com" target="_blank" class="text-bd-green hover:underline">Groq Console</a>.</p>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] text-gray-500 font-black uppercase tracking-widest mb-2">Your Groq API Key</label>
+                        <input type="password" id="userApiKey" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-bd-green/50" placeholder="AIzaSy...">
+                    </div>
+                    <button onclick="saveApiKey()" class="w-full py-4 bd-gradient rounded-xl font-bold text-white flex items-center justify-center space-x-2 hover:opacity-90 transition-all"><i class="fa-solid fa-check"></i><span>Save API Key</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectDocType(type) {
+            const prompts = {
+                'general_diary': 'Create a General Diary (GD) for [incident]. My name is [name], address: [address], phone: [number]. The incident happened on [date] at [location].',
+                'legal_notice': 'Create a Legal Notice to [recipient name] regarding [issue]. I am [your name], the [relationship]. The issue is [description].',
+                'affidavit': 'Create an Affidavit for [purpose]. My name is [name], father: [father name], address: [address], NID: [number].',
+                'power_of_attorney': 'Create a Power of Attorney. I, [principal name], want to give power to [agent name] for [purpose].',
+                'bail_application': 'Create a Bail Application for case [case number] under sections [sections]. Accused name: [name].',
+                'agreement': 'Create an Agreement between [party A] and [party B] for [purpose/transaction details].'
+            };
+            document.getElementById('docPrompt').value = prompts[type] || '';
+            document.getElementById('docPrompt').focus();
+        }
+
+        async function generateDocument(event) {
+            event.preventDefault();
+            const prompt = document.getElementById('docPrompt').value;
+            const language = document.getElementById('docLanguage').value;
+            const btn = document.getElementById('generateBtn');
+            const loading = document.getElementById('loadingIndicator');
+            const result = document.getElementById('resultArea');
+            
+            btn.disabled = true;
+            btn.classList.add('opacity-50');
+            loading.classList.remove('hidden');
+            result.classList.add('hidden');
+            
+            try {
+                const response = await fetch('/generate_document', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ doc_prompt: prompt, language: language })
+                });
+                const data = await response.json();
+                
+                loading.classList.add('hidden');
+                
+                if (data.error) {
+                    alert('Error: ' + data.error);
+                } else {
+                    document.getElementById('downloadLink').href = data.download_url;
+                    result.classList.remove('hidden');
+                }
+            } catch (error) {
+                loading.classList.add('hidden');
+                alert('Failed to generate document. Please try again.');
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50');
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('docForm').reset();
+            document.getElementById('resultArea').classList.add('hidden');
+            document.getElementById('docPrompt').focus();
+        }
+
+        function toggleApiKeyModal() {
+            document.getElementById('apiKeyModal').classList.toggle('hidden');
+        }
+
+        async function saveApiKey() {
+            const key = document.getElementById('userApiKey').value.trim();
+            if (!key) { alert('Please enter an API key'); return; }
+            
+            try {
+                const response = await fetch('/api/set_key', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ api_key: key })
+                });
+                const data = await response.json();
+                
+                if (data.error) { alert('Error: ' + data.error); }
+                else {
+                    document.getElementById('apiKeyStatus').textContent = 'Using your custom API key ✓';
+                    alert('API key saved!');
+                    toggleApiKeyModal();
+                }
+            } catch (error) { alert('Failed to save API key'); }
+        }
+    </script>
+</body>
+</html>

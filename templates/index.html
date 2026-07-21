@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal-Bengal | AI Legal Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        bd: {
+                            green: '#006A4E',
+                            red: '#F42A41',
+                            dark: '#0A0A0C',
+                            glass: 'rgba(255, 255, 255, 0.05)',
+                            border: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        body { background: #000; color: #fff; overflow-x: hidden; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-strong { background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.12); }
+        .bd-gradient { background: linear-gradient(135deg, #006A4E 0%, #00A884 50%, #F42A41 100%); }
+        .bd-gradient-text { background: linear-gradient(135deg, #00D4AA 0%, #00A884 50%, #FF6B6B 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .glow-green { box-shadow: 0 0 30px rgba(0, 106, 78, 0.4), 0 0 60px rgba(0, 168, 132, 0.2); }
+        .glow-border { box-shadow: 0 0 20px rgba(0, 106, 78, 0.15); }
+        .nav-item { transition: all 0.3s ease; }
+        .nav-item:hover { background: rgba(255, 255, 255, 0.05); }
+        .nav-item.active { background: rgba(0, 106, 78, 0.15); border: 1px solid rgba(0, 168, 132, 0.3); }
+        .nav-item.active i { color: #00D4AA; }
+        .message-user { background: linear-gradient(135deg, rgba(0, 106, 78, 0.9) 0%, rgba(0, 80, 60, 0.95) 100%); border: 1px solid rgba(0, 212, 170, 0.3); }
+        .message-assistant { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .source-badge { font-size: 0.65rem; padding: 2px 8px; border-radius: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .source-JSON { background: rgba(0, 212, 170, 0.2); color: #00D4AA; border: 1px solid rgba(0, 212, 170, 0.3); }
+        .source-RAG { background: rgba(0, 122, 255, 0.2); color: #4AA3FF; border: 1px solid rgba(0, 122, 255, 0.3); }
+        .source-HYBRID { background: rgba(168, 85, 247, 0.2); color: #C084FC; border: 1px solid rgba(168, 85, 247, 0.3); }
+        .source-GEN { background: rgba(255, 193, 7, 0.2); color: #FFD54F; border: 1px solid rgba(255, 193, 7, 0.3); }
+        .chat-container::-webkit-scrollbar { width: 6px; }
+        .chat-container::-webkit-scrollbar-track { background: transparent; }
+        .chat-container::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        .chat-container::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+        .typing-dot { animation: typing 1.4s infinite ease-in-out both; }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        .fade-in-up { animation: fadeInUp 0.5s ease-out; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .pulse-glow { animation: pulseGlow 2s ease-in-out infinite; }
+        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 20px rgba(0, 106, 78, 0.3); } 50% { box-shadow: 0 0 40px rgba(0, 106, 78, 0.5); } }
+        .chat-list-item { transition: all 0.2s ease; }
+        .chat-list-item:hover { background: rgba(255, 255, 255, 0.05); }
+        .chat-list-item.active { background: rgba(0, 106, 78, 0.2); border-left: 3px solid #00D4AA; }
+        .input-glow:focus { box-shadow: 0 0 0 2px rgba(0, 168, 132, 0.3), 0 0 20px rgba(0, 168, 132, 0.1); }
+    </style>
+</head>
+<body class="min-h-screen bg-black flex flex-col md:flex-row">
+    <!-- Desktop Sidebar -->
+    <aside class="hidden md:flex flex-col w-80 glass border-r border-white/10 p-6 sticky top-0 h-screen z-50">
+        <div class="flex items-center space-x-3 mb-8">
+            <div class="w-14 h-14 bd-gradient rounded-2xl flex items-center justify-center glow-green">
+                <i class="fa-solid fa-scale-balanced text-white text-2xl"></i>
+            </div>
+            <div>
+                <span class="text-2xl font-black tracking-tighter bd-gradient-text">Legal-Bengal</span>
+                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">AI Legal Assistant</p>
+            </div>
+        </div>
+        <button onclick="createNewChat()" class="w-full mb-6 py-4 bd-gradient rounded-2xl font-bold text-white flex items-center justify-center space-x-2 hover:opacity-90 transition-all glow-border">
+            <i class="fa-solid fa-plus"></i>
+            <span>New Legal Consultation</span>
+        </button>
+        <nav class="flex-1 space-y-2">
+            <div class="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-3 px-4">Chat History</div>
+            <div id="chatList" class="space-y-1 max-h-[calc(100vh-400px)] overflow-y-auto">
+                {% for chat in chat_list %}
+                <div class="chat-list-item {% if chat.name == chat_name %}active{% endif %} flex items-center space-x-3 px-4 py-3 rounded-xl cursor-pointer text-sm" onclick="loadChat('{{ chat.name }}')">
+                    <i class="fa-regular fa-comments text-gray-400"></i>
+                    <span class="truncate text-gray-300">{{ chat.title }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </nav>
+        <div class="pt-4 border-t border-white/10 space-y-3">
+            <a href="/laws" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white">
+                <i class="fa-solid fa-book-open text-lg"></i>
+                <span class="font-semibold text-sm">Legal Database</span>
+            </a>
+            <a href="/generate" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white">
+                <i class="fa-solid fa-file-contract text-lg"></i>
+                <span class="font-semibold text-sm">Document Generator</span>
+            </a>
+            <button onclick="toggleApiKeyModal()" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white">
+                <i class="fa-solid fa-key text-lg"></i>
+                <span class="font-semibold text-sm">API Key Settings</span>
+            </button>
+        </div>
+        <div class="mt-4 p-4 glass rounded-2xl">
+            <div class="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-2">Response Language</div>
+            <select id="languageSelect" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-bd-green/50">
+                <option value="en">🇬🇧 English</option>
+                <option value="bn">🇧🇩 বাংলা (Bengali)</option>
+            </select>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden">
+        <header class="glass border-b border-white/5 px-6 py-4 flex items-center justify-between sticky top-0 z-40">
+            <div class="md:hidden flex items-center space-x-3">
+                <div class="w-10 h-10 bd-gradient rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-scale-balanced text-white"></i>
+                </div>
+                <span class="font-black text-xl tracking-tighter bd-gradient-text">Legal-Bengal</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-4">
+                <div class="text-sm text-gray-400">
+                    <i class="fa-solid fa-circle text-green-500 text-[8px] mr-2 animate-pulse"></i>
+                    <span id="sourceIndicator">Ready to assist</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="hidden sm:flex flex-col items-end">
+                    <span class="text-[10px] text-gray-500 font-black uppercase tracking-widest">Database</span>
+                    <span class="text-xs font-bold text-bd-green">1,648+ Laws</span>
+                </div>
+                <button onclick="toggleApiKeyModal()" class="p-3 glass rounded-xl hover:bg-white/5 transition-all" title="API Key Settings">
+                    <i class="fa-solid fa-gear text-gray-400"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Chat Area -->
+        <div id="chatContainer" class="flex-1 overflow-y-auto chat-container p-4 md:p-8 space-y-6">
+            <div class="fade-in-up">
+                <div class="max-w-3xl mx-auto">
+                    <div class="glass-strong rounded-3xl p-8 mb-6">
+                        <div class="flex items-center space-x-4 mb-6">
+                            <div class="w-16 h-16 bd-gradient rounded-2xl flex items-center justify-center glow-green">
+                                <i class="fa-solid fa-scale-balanced text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <h1 class="text-3xl font-black tracking-tight text-white">Welcome to Legal-Bengal</h1>
+                                <p class="text-gray-400">Your AI-powered Bangladesh Legal Assistant</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div class="glass p-4 rounded-2xl">
+                                <i class="fa-solid fa-book-open text-bd-green text-xl mb-2"></i>
+                                <h3 class="font-bold text-white mb-1">Comprehensive Laws</h3>
+                                <p class="text-sm text-gray-400">Constitution, Penal Code, CrPC & more</p>
+                            </div>
+                            <div class="glass p-4 rounded-2xl">
+                                <i class="fa-solid fa-language text-bd-green text-xl mb-2"></i>
+                                <h3 class="font-bold text-white mb-1">Bilingual Support</h3>
+                                <p class="text-sm text-gray-400">Ask in English or বাংলা</p>
+                            </div>
+                            <div class="glass p-4 rounded-2xl">
+                                <i class="fa-solid fa-file-contract text-bd-green text-xl mb-2"></i>
+                                <h3 class="font-bold text-white mb-1">Document Generator</h3>
+                                <p class="text-sm text-gray-400">GD, Legal Notice, Affidavit & more</p>
+                            </div>
+                            <div class="glass p-4 rounded-2xl">
+                                <i class="fa-solid fa-brain text-bd-green text-xl mb-2"></i>
+                                <h3 class="font-bold text-white mb-1">AI-Powered</h3>
+                                <p class="text-sm text-gray-400">Groq (Llama 3.1) with legal context</p>
+                            </div>
+                        </div>
+                        <div class="border-t border-white/10 pt-4">
+                            <p class="text-sm text-gray-400 mb-3"><strong>Try asking:</strong></p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-300 hover:bg-white/10 cursor-pointer transition-all" onclick="setInput('What is Section 302 of the Penal Code?')">"Section 302 Penal Code"</span>
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-300 hover:bg-white/10 cursor-pointer transition-all" onclick="setInput('Explain Article 27 of the Constitution')">"Article 27 Constitution"</span>
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-300 hover:bg-white/10 cursor-pointer transition-all" onclick="setInput('কিভাবে জিডি করতে হয়?')">"কিভাবে জিডি করতে হয়?"</span>
+                                <span class="px-3 py-1 glass rounded-full text-xs text-gray-300 hover:bg-white/10 cursor-pointer transition-all" onclick="setInput('How to file a criminal case?')">"How to file a case?"</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass rounded-2xl p-4 border-l-4 border-yellow-500/50">
+                        <p class="text-xs text-gray-400">
+                            <i class="fa-solid fa-triangle-exclamation text-yellow-500 mr-2"></i>
+                            <strong>Disclaimer:</strong> This is educational information only, not legal advice. Always consult a qualified lawyer for legal matters.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {% for i in range(chat_data.past|length) %}
+            <div class="flex justify-end fade-in-up">
+                <div class="message-user max-w-[80%] rounded-3xl rounded-tr-lg px-6 py-4">
+                    <p class="text-white">{{ chat_data.past[i] }}</p>
+                </div>
+            </div>
+            <div class="flex justify-start fade-in-up">
+                <div class="message-assistant max-w-[85%] rounded-3xl rounded-tl-lg px-6 py-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bd-gradient rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                            <i class="fa-solid fa-scale-balanced text-white text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-gray-200 leading-relaxed">{{ chat_data.generated[i] }}</p>
+                            <div class="mt-3 flex items-center space-x-2">
+                                <span class="source-badge source-{{ chat_data.source[i] }}">{{ chat_data.source[i] }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div id="typingIndicator" class="hidden flex justify-start">
+                <div class="message-assistant rounded-3xl rounded-tl-lg px-6 py-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bd-gradient rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-scale-balanced text-white text-xs"></i>
+                        </div>
+                        <div class="flex space-x-1">
+                            <div class="w-2 h-2 bg-gray-500 rounded-full typing-dot"></div>
+                            <div class="w-2 h-2 bg-gray-500 rounded-full typing-dot"></div>
+                            <div class="w-2 h-2 bg-gray-500 rounded-full typing-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="glass border-t border-white/10 p-4 md:p-6">
+            <div class="max-w-4xl mx-auto">
+                <form id="chatForm" onsubmit="sendMessage(event)" class="relative">
+                    <div class="flex items-center space-x-3 glass-strong rounded-2xl px-4 py-3">
+                        <input type="text" id="userInput" class="flex-1 bg-transparent border-none outline-none text-white placeholder-gray-500 text-sm md:text-base" placeholder="Ask about Bangladesh law... (e.g., Section 302, Article 27, or জিডি কিভাবে করে?)" autocomplete="off">
+                        <button type="submit" class="w-10 h-10 bd-gradient rounded-xl flex items-center justify-center hover:opacity-90 transition-all pulse-glow">
+                            <i class="fa-solid fa-paper-plane text-white"></i>
+                        </button>
+                    </div>
+                </form>
+                <p class="text-center text-[10px] text-gray-600 mt-2 uppercase tracking-widest font-semibold">Legal-Bengal may produce inaccurate information. Verify with official sources.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="md:hidden fixed bottom-4 left-4 right-4 h-18 glass border border-white/20 flex items-center justify-around px-2 rounded-[28px] z-50">
+        <a href="/" class="flex flex-col items-center justify-center w-16 h-14 rounded-2xl bg-bd-green/20 text-bd-green">
+            <i class="fa-solid fa-comments text-lg"></i>
+            <span class="text-[9px] font-black uppercase tracking-tighter mt-1">Chat</span>
+        </a>
+        <a href="/laws" class="flex flex-col items-center justify-center w-16 h-14 rounded-2xl text-gray-500">
+            <i class="fa-solid fa-book-open text-lg"></i>
+            <span class="text-[9px] font-black uppercase tracking-tighter mt-1">Laws</span>
+        </a>
+        <a href="/generate" class="flex flex-col items-center justify-center w-16 h-14 rounded-2xl text-gray-500">
+            <i class="fa-solid fa-file-contract text-lg"></i>
+            <span class="text-[9px] font-black uppercase tracking-tighter mt-1">Docs</span>
+        </a>
+        <button onclick="toggleApiKeyModal()" class="flex flex-col items-center justify-center w-16 h-14 rounded-2xl text-gray-500">
+            <i class="fa-solid fa-gear text-lg"></i>
+            <span class="text-[9px] font-black uppercase tracking-tighter mt-1">Settings</span>
+        </button>
+    </nav>
+
+    <!-- API Key Modal -->
+    <div id="apiKeyModal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="toggleApiKeyModal()"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-4">
+            <div class="glass-strong rounded-3xl p-6 border border-white/20">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-black text-white">API Key Settings</h3>
+                    <button onclick="toggleApiKeyModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <div class="glass rounded-2xl p-4 mb-4 border-l-4 border-bd-green">
+                    <p class="text-sm text-gray-300"><i class="fa-solid fa-circle-info text-bd-green mr-2"></i><span id="apiKeyStatus">Using default API key</span></p>
+                </div>
+                <p class="text-sm text-gray-400 mb-4">You can use your own Groq API key for personal usage. Get one free from <a href="https://console.groq.com" target="_blank" class="text-bd-green hover:underline">Groq Console</a>.</p>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] text-gray-500 font-black uppercase tracking-widest mb-2">Your Groq API Key</label>
+                        <input type="password" id="userApiKey" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-bd-green/50 input-glow transition-all" placeholder="AIzaSy...">
+                    </div>
+                    <button onclick="saveApiKey()" class="w-full py-4 bd-gradient rounded-xl font-bold text-white flex items-center justify-center space-x-2 hover:opacity-90 transition-all"><i class="fa-solid fa-check"></i><span>Save API Key</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentChatName = '{{ chat_name }}';
+        const chatContainer = document.getElementById('chatContainer');
+        
+        window.onload = function() { chatContainer.scrollTop = chatContainer.scrollHeight; };
+
+        function setInput(text) {
+            document.getElementById('userInput').value = text;
+            document.getElementById('userInput').focus();
+        }
+        
+        async function sendMessage(event) {
+            event.preventDefault();
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            addMessage(message, 'user');
+            input.value = '';
+            
+            document.getElementById('typingIndicator').classList.remove('hidden');
+            document.getElementById('sourceIndicator').textContent = 'Analyzing...';
+
+            try {
+                const language = document.getElementById('languageSelect').value;
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 second timeout
+                
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_input: message,
+                        chat_name: currentChatName,
+                        language: language
+                    }),
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+                const data = await response.json();
+                console.log('Server response:', data);
+                
+                // Hide typing indicator
+                document.getElementById('typingIndicator').classList.add('hidden');
+                
+                if (data.error) {
+                    addMessage('❌ Error: ' + data.error, 'assistant', 'GEN');
+                } else {
+                    addMessage(data.response, 'assistant', data.source);
+                    document.getElementById('sourceIndicator').textContent = 'Source: ' + data.source;
+                    setTimeout(() => { document.getElementById('sourceIndicator').textContent = 'Ready'; }, 3000);
+                }
+            } catch (error) {
+                document.getElementById('typingIndicator').classList.add('hidden');
+                console.error('Chat error:', error);
+                addMessage('❌ Error: ' + error.message, 'assistant', 'GEN');
+            }
+        }
+        
+        function addMessage(text, type, source = null) {
+            const div = document.createElement('div');
+            div.className = 'fade-in-up';
+            
+            if (type === 'user') {
+                div.innerHTML = `<div class="flex justify-end"><div class="message-user max-w-[80%] rounded-3xl rounded-tr-lg px-6 py-4"><p class="text-white">${escapeHtml(text)}</p></div></div>`;
+            } else {
+                const sourceBadge = source ? `<span class="source-badge source-${source}">${source}</span>` : '';
+                div.innerHTML = `<div class="flex justify-start"><div class="message-assistant max-w-[85%] rounded-3xl rounded-tl-lg px-6 py-4"><div class="flex items-start space-x-3"><div class="w-8 h-8 bd-gradient rounded-lg flex items-center justify-center flex-shrink-0 mt-1"><i class="fa-solid fa-scale-balanced text-white text-xs"></i></div><div class="flex-1"><p class="text-gray-200 leading-relaxed">${formatText(text)}</p><div class="mt-3 flex items-center space-x-2">${sourceBadge}</div></div></div></div></div>`;
+            }
+            chatContainer.appendChild(div);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function formatText(text) {
+            return text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>');
+        }
+        
+        async function createNewChat() {
+            const response = await fetch('/new_chat', { method: 'POST' });
+            const data = await response.json();
+            currentChatName = data.chat_name;
+            const welcome = chatContainer.children[0];
+            chatContainer.innerHTML = '';
+            chatContainer.appendChild(welcome);
+            refreshChatList();
+        }
+        
+        async function loadChat(chatName) {
+            currentChatName = chatName;
+            const response = await fetch('/load_chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_name: chatName })
+            });
+            const data = await response.json();
+            const chatData = data.chat_data;
+            const welcome = chatContainer.children[0];
+            chatContainer.innerHTML = '';
+            chatContainer.appendChild(welcome);
+            
+            for (let i = 0; i < chatData.past.length; i++) {
+                addMessage(chatData.past[i], 'user');
+                addMessage(chatData.generated[i], 'assistant', chatData.source[i]);
+            }
+        }
+        
+        async function refreshChatList() {
+            const response = await fetch('/chat_list');
+            const data = await response.json();
+            const listDiv = document.getElementById('chatList');
+            listDiv.innerHTML = data.chat_list.map(chat => `
+                <div class="chat-list-item ${chat.name === currentChatName ? 'active' : ''} flex items-center space-x-3 px-4 py-3 rounded-xl cursor-pointer text-sm" onclick="loadChat('${chat.name}')">
+                    <i class="fa-regular fa-comments text-gray-400"></i>
+                    <span class="truncate text-gray-300">${chat.title}</span>
+                </div>
+            `).join('');
+        }
+        
+        function toggleApiKeyModal() {
+            const modal = document.getElementById('apiKeyModal');
+            modal.classList.toggle('hidden');
+        }
+        
+        async function saveApiKey() {
+            const key = document.getElementById('userApiKey').value.trim();
+            if (!key) { alert('Please enter an API key'); return; }
+            
+            try {
+                const response = await fetch('/api/set_key', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ api_key: key })
+                });
+                const data = await response.json();
+                
+                if (data.error) { alert('Error: ' + data.error); }
+                else {
+                    document.getElementById('apiKeyStatus').textContent = 'Using your custom API key ✓';
+                    alert('API key saved successfully!');
+                    toggleApiKeyModal();
+                }
+            } catch (error) { alert('Failed to save API key'); }
+        }
+    </script>
+</body>
+</html>
